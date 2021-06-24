@@ -15,10 +15,10 @@ public class ViewModel {
      */
     public ViewModel() {
         this.model = new Model();
-
     }
 
     public void connect(String ip, int port) throws InterruptedException {
-        this.model.connect(ip, port);
+        System.out.println("vm");
+        this.model = new Model(ip, port);
     }
 }

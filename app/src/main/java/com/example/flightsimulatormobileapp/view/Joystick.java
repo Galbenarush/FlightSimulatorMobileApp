@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.example.flightsimulatormobileapp.R;
 
-public class JoystickActivity extends View {
+public class Joystick extends View {
 
 
     ImageView _knob;
@@ -24,7 +24,7 @@ public class JoystickActivity extends View {
     private int radius;
 
     // constructor
-    public JoystickActivity(Context context) {
+    public Joystick(Context context) {
         super(context);
     }
 
@@ -38,6 +38,8 @@ public class JoystickActivity extends View {
 //        SendingTask s = MainActivity.sendingTask;
 //        s.addToQueue(xCommand);
 //        s.addToQueue(yCommand);
+//        this.vm.setAileron(xCommand);
+//        this.vm.setElevator(yCommand);
     }
 
     // The function checks if a point (x,y) is inside the circle
@@ -101,8 +103,8 @@ public class JoystickActivity extends View {
 
 //    @Override
 //    public void onCreate(Bundle savedInstanceState) {
-////        super.onCreate(savedInstanceState);
-////        setContentView(R.layout.activity_joystick);
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_joystick);
 //
 //    }
 //

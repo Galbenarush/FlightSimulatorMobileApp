@@ -13,12 +13,11 @@
         android:layout_height="45dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layocut_marginStart="50dp"
+        android:layout_marginStart="50dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="40dp"
         android:text="@string/ip"
         android:textSize="20sp" />
-
 
     <EditText
         android:id="@+id/ipString"
@@ -103,7 +102,9 @@
         android:layout_width="350dp"
         android:layout_height="80dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="200dp" />
+        android:layout_marginTop="200dp"
+        android:min="-1"
+        android:max="1"/>
 
     <SeekBar
         android:id="@+id/throttle"
@@ -111,7 +112,9 @@
         android:layout_height="80dp"
         android:rotation="90"
         android:layout_marginLeft="-150dp"
-        android:layout_marginTop="380dp"/>
+        android:layout_marginTop="380dp"
+        android:min="0"
+        android:max="1"/>
 
 
 </RelativeLayout>

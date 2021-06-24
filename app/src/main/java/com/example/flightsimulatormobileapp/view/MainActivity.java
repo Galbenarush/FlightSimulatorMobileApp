@@ -10,10 +10,11 @@ import com.example.flightsimulatormobileapp.R;
 import com.example.flightsimulatormobileapp.viewModel.ViewModel;
 
 public class MainActivity extends AppCompatActivity {
+    private ViewModel vm;
     private String ip;
     private int port;
-    private ViewModel vm;
-    private Thread thread;
+    private double throttle;
+    private double rudder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
