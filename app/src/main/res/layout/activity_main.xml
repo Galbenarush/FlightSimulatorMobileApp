@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height = "match_parent"
-    tools:context = ".view.MainActivity"
-    android:background="#F5F5DC">
+    android:layout_height="match_parent"
+    android:background="#F5F5DC"
+    tools:context=".view.MainActivity">
 
     <TextView
         android:id="@+id/ip"
@@ -15,7 +15,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginStart="50dp"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="40dp"
         android:text="@string/ip"
         android:textSize="20sp" />
 
@@ -28,9 +28,9 @@
         android:layout_alignParentRight="true"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="@android:dimen/notification_large_icon_height"
-        android:layout_marginEnd="116dp"
-        android:layout_marginRight="116dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="115dp"
+        android:layout_marginRight="115dp"
         android:layout_toEndOf="@id/ip"
         android:layout_toRightOf="@id/ip"
         android:ems="10"
@@ -60,11 +60,11 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
-        android:layout_marginStart="22dp"
-        android:layout_marginLeft="98dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="103dp"
-        android:layout_marginRight="103dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="115dp"
+        android:layout_marginRight="100dp"
         android:layout_marginBottom="200dp"
         android:layout_toEndOf="@+id/port"
         android:layout_toRightOf="@id/port"
@@ -73,14 +73,45 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="450dp"
+        android:layout_marginBottom="490dp"
         android:background="#6495ed"
         android:onClick="Connect"
-        android:text="@string/connect" />
+        android:text="@string/connect"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/outerCircle"
+        android:layout_width="500dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="180dp"
+        app:srcCompat="@drawable/circle" />
+
+    <ImageView
+        android:id="@+id/innerCircle"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="145dp"
+        android:layout_marginTop="380dp"
+        app:srcCompat="@drawable/circle2" />
+
+    <SeekBar
+        android:id="@+id/rudder"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="200dp" />
+
+    <SeekBar
+        android:id="@+id/throttle"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:rotation="90"
+        android:layout_marginLeft="-150dp"
+        android:layout_marginTop="380dp"/>
 
 
 </RelativeLayout>
