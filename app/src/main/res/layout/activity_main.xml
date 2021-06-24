@@ -13,7 +13,7 @@
         android:layout_height="45dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginStart="50dp"
+        android:layocut_marginStart="50dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="40dp"
         android:text="@string/ip"
