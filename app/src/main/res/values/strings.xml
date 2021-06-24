@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">FlightSimulatorMobileApp</string>
+    <string name="connect">Connect</string>
+    <string name="portHint">Please Type Port</string>
+    <string name="IPHint">Please Type IP</string>
+    <string name="port">Port</string>
+    <string name="ip">IP</string>
+    <string name="rudder">Rudder</string>
+    <string name="throttle">Throttle</string>
 </resources>
