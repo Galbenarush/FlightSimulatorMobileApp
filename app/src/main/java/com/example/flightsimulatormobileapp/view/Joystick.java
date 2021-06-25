@@ -1,172 +1,190 @@
 package com.example.flightsimulatormobileapp.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.os.Bundle;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
-import com.example.flightsimulatormobileapp.R;
+
+import androidx.annotation.Nullable;
+
+import com.example.flightsimulatormobileapp.attributes.OnChange;
 
 public class Joystick extends View {
+    private Paint paint;
+    private int outerCX;
+    private int outerCY;
+    private double outerCR;
+    private int joystickCircleX;
+    private int joystickCircleY;
+    private double joystickCircleRadius;
+    private int h;
+    private int w;
+    public OnChange onChange;
 
-
-    ImageView _knob;
-    ViewGroup _root;
-    private int _xDelta;
-    private int _yDelta;
-    private int originalX;
-    private int originalY;
-    private int radius;
-
-    // constructor
     public Joystick(Context context) {
         super(context);
+        this.paint = new Paint();
     }
 
-
-    // send the values to the simulator
-    private void sendToSimulator(double x, double y)
-    {
-//        String xCommand = "set /controls/flight/aileron " + x + "\n";
-//        String yCommand = "set /controls/flight/elevator " + y + "\n";
-//
-//        SendingTask s = MainActivity.sendingTask;
-//        s.addToQueue(xCommand);
-//        s.addToQueue(yCommand);
-//        this.vm.setAileron(x);
-//        this.vm.setElevator(y);
+    public Joystick(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        this.paint = new Paint();
     }
 
-    // The function checks if a point (x,y) is inside the circle
-    private boolean isInCircle(int x, int y)
-    {
-        int diffX = originalX - x;
-        int diffY = originalY - y;
-        double d = Math.sqrt( Math.pow(diffX, 2) + Math.pow(diffY, 2));
-        return d <= radius;
+    public Joystick(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        this.paint = new Paint();
     }
 
-    // Gets the Y value for the simulator
-    private double getClientYValue(int currentY)
-    {
-        double normalY = Math.abs(originalY - currentY) / (double)radius;
-        if (currentY > originalY)
-            normalY = normalY *(-1);
-        return normalY;
+    @Override
+    protected void onSizeChanged(int w, int h, int old_w, int old_h) {
+        // super constructor
+        super.onSizeChanged(w, h, old_w, old_h);
+        this.w = w;
+        this.h = h;
+
+        // evaluate inner x,y,r
+        this.joystickCircleRadius = 0.15f * Math.min(w, h);
+        this.joystickCircleX = this.w / 2;
+        this.joystickCircleY = this.h / 2;
+
+        // evaluate outer x,y,r
+        this.outerCR = 0.4 * Math.min(w, h);
+        this.outerCX = this.w / 2;
+        this.outerCY = this.h / 2;
     }
 
-    // Gets the X value for the simulator
-    private double getClientXValue(int currentX)
-    {
-        double normalX = Math.abs(originalX - currentX) / (double)radius;
-        if (currentX < originalX)
-            normalX = normalX *(-1);
-        return normalX;
-    }
 
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
+    public boolean onTouchEvent(MotionEvent event) {
+        super.onTouchEvent(event);
 
-        super.onWindowFocusChanged(hasFocus);
+        //Getting the X and Y coordinates of the touch input.
+        int touchX = (int) event.getX();
+        int touchY = (int) event.getY();
+        int eventaction = event.getAction();
 
-        if(hasFocus) {
-            _root = (ViewGroup)findViewById(R.id.relativeRoot);
-            _knob = (ImageView) findViewById(R.id.innerCircle);
-            ImageView outer = (ImageView) findViewById(R.id.outerCircle);
-            radius = (outer.getBottom() - outer.getTop()) / 2;
-
-
-
-            // Convert from pixels to dp
-            float factor = getResources().getDisplayMetrics().density;
-            int w  = (int)factor * 98;
-            int h = (int) factor * 114;
-
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(w, h);
-            layoutParams.topMargin = (int)_knob.getY() +20;
-            layoutParams.leftMargin = (int)_knob.getX() +20;
-
-            // Save the original values for returning to center
-            originalX = (int)_knob.getX() +20;
-            originalY = (int)_knob.getY() +20;
-
-            _knob.setLayoutParams(layoutParams);
-//            _knob.setOnTouchListener(this);
-        }
-    }
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_joystick);
-//
-//    }
-//
-//    @Override
-//    protected void onDestroy ()
-//    {
-////        super.onDestroy();
-////        if (isFinishing())
-////        {
-////            MainActivity.sendingTask.stopClient();
-////        }
-//    }
-
-    public boolean onTouch(View view, MotionEvent event) {
-        final int X = (int) event.getRawX();
-        final int Y = (int) event.getRawY();
-        switch (event.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_DOWN:
-                RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                _xDelta = X - lParams.leftMargin;
-                _yDelta = Y - lParams.topMargin;
-                break;
-
-            case MotionEvent.ACTION_UP:
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                layoutParams.topMargin = originalY;
-                layoutParams.leftMargin = originalX;
-                view.setLayoutParams(layoutParams);
-                sendToSimulator(0, 0);
-                break;
-
-            case MotionEvent.ACTION_POINTER_DOWN:
-                break;
-
-            case MotionEvent.ACTION_POINTER_UP:
-                break;
-
+        switch (eventaction) {
+            //The user moved the joystick.
             case MotionEvent.ACTION_MOVE:
-                RelativeLayout.LayoutParams layoutParams1 = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                layoutParams1.leftMargin = X - _xDelta;
-                layoutParams1.topMargin = Y - _yDelta;
-                layoutParams1.rightMargin = -250;
-                layoutParams1.bottomMargin = -250;
+                moveOnTouch(touchX, touchY);
+                this.invalidate();
+                break;
 
-                // Get values for the simulator
-                double simulatorX = getClientXValue(layoutParams1.leftMargin);
-                double simulatorY = getClientYValue(layoutParams1.topMargin);
+            //The user let go of the joystick
+            case MotionEvent.ACTION_UP:
+                this.joystickCircleY = this.outerCY;
+                this.joystickCircleX = this.outerCX;
+                try {
+                    onChange.onChange(0,0);
+                } catch (Exception e) {
 
-                if (isInCircle(layoutParams1.leftMargin, layoutParams1.topMargin) && Math.abs(simulatorX) <= 1 && Math.abs(simulatorY) <= 1)
-                {
-                    view.setLayoutParams(layoutParams1);
-                    sendToSimulator(simulatorX, simulatorY);
                 }
-
-
-
+                this.invalidate();
                 break;
         }
-        _root.invalidate();
         return true;
     }
 
+    /*** SIN function ***/
+    private double sin(double angle) {
+        return Math.sin(Math.toRadians(angle));
+    }
+
+    /*** MOVE action - update aileron and elevator values***/
+    private void moveOnTouch(int x, int y) {
+
+        double dis = Math.sqrt(Math.pow(x - this.outerCX, 2) + Math.pow(y - this.outerCY, 2));
+        if (dis <= this.outerCR) { // inside
+            this.joystickCircleX = x;
+            this.joystickCircleY = y;
+        } else { // outside
+            if (x == this.outerCX) {
+                if (y > this.outerCY) {
+                    this.joystickCircleY = this.outerCY + (int)this.outerCR;
+                    this.joystickCircleX = this.outerCX;
+                } else {
+                    this.joystickCircleY = this.outerCY - (int)this.outerCR;
+                    this.joystickCircleX = this.outerCX;
+                }
+            } else {
+                double angle = calcDeg(x, y);
+                if (angle <= 90) {
+                    this.joystickCircleY = (int)(this.outerCY + this.outerCR * sin(angle));
+                    this.joystickCircleX = findX(this.joystickCircleY, true);
+                } else if (angle <= 180) {
+                    this.joystickCircleY = (int)(this.outerCY + this.outerCR * sin(angle));
+                    this.joystickCircleX = findX(this.joystickCircleY, false);
+                } else if (angle <= 270) {
+                    this.joystickCircleY = (int)(this.outerCY - this.outerCR * sin(angle-180));
+                    this.joystickCircleX = findX(this.joystickCircleY, false);
+                } else {
+                    this.joystickCircleY = (int)(this.outerCY - this.outerCR * sin(360-angle));
+                    this.joystickCircleX = findX(this.joystickCircleY, true);
+                }
+            }
+        }
+
+        //Activating the onChange method to notify that the values have changed.
+        try {
+            double a = (this.joystickCircleX - this.outerCX) / (this.outerCR);
+            double e = (this.joystickCircleY - this.outerCY) / (this.outerCR);
+            e = -1 * e;
+            onChange.onChange(a,e);
+        } catch (Exception e) {
+            System.out.println("error on change");
+        }
+    }
+
+    /*** FIND the correct value of X ***/
+    private int findX(int y, boolean isPos) {
+        double x = Math.sqrt(Math.abs(Math.pow(this.outerCR, 2) - Math.pow(y - this.outerCY, 2)));
+        if (isPos) {
+            x += this.outerCX;
+        } else {
+            x = this.outerCX - x;
+        }
+        return (int)x;
+    }
+
+    /*** CALCULATE degree for movement ***/
+    private double calcDeg(int x, int y) {
+        double incline, d;
+        incline = (double)(this.outerCY - y) / (double)(this.outerCX - x);
+        d = Math.toDegrees(Math.atan(Math.abs(incline)));
+        if (x < this.outerCX && y > this.outerCY) {
+            return 180 - d;
+        }
+        if (x < this.outerCX && y < this.outerCY) {
+            return 180 + d;
+        }
+        if (x > this.outerCX && y < this.outerCY) {
+            return 360 - d;
+        }
+        return d;
+    }
+
+    /*** DRAW joystick***/
+    @Override
+    protected void onDraw(Canvas canvas) {
+
+        super.onDraw(canvas);
+
+        // Draw inner circle
+        paint.setColor(Color.parseColor("#FFFFFF"));
+        canvas.drawCircle(this.joystickCircleX, this.joystickCircleY,
+                (float)this.joystickCircleRadius, paint);
+
+        // Draw outer circle
+        paint.setColor(Color.parseColor("#000000"));
+        canvas.drawCircle(this.outerCX, this.outerCY,
+                (float)this.outerCR, paint);
+
+    }
 
 }
-

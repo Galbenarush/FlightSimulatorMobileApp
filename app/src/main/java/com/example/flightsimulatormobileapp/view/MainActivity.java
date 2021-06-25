@@ -2,6 +2,8 @@ package com.example.flightsimulatormobileapp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
+import com.google.android.material.snackbar.Snackbar;
+import android.graphics.Color;
 import android.os.Bundle; // a mapping from String keys to various Parcelable values.
 import android.view.View;
 import android.widget.EditText;
@@ -47,13 +49,16 @@ public class MainActivity extends AppCompatActivity {
             this.port = port;
             this.vm.connect(ip, port);
         }
-
+        this.joystick.onChange = (a, e) -> {
+            this.vm.setAileron(a);
+            this.vm.setElevator(e);
+        };
     }
 
     private void setAttributes() {
         this.rudder = findViewById(R.id.rudder);
         this.throttle = findViewById(R.id.throttle);
-        // this.joystick = findViewById(R.id.joystick);
+         this.joystick = findViewById(R.id.joystick);
     }
 
     private void setActionListeners() {

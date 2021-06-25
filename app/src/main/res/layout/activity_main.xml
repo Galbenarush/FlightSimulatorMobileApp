@@ -82,20 +82,34 @@
         android:text="@string/connect"
         android:textSize="14sp" />
 
-    <ImageView
-        android:id="@+id/outerCircle"
-        android:layout_width="500dp"
-        android:layout_height="500dp"
-        android:layout_marginTop="180dp"
-        app:srcCompat="@drawable/circle" />
+    <FrameLayout
+        android:id="@+id/joystick_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp">
 
-    <ImageView
-        android:id="@+id/innerCircle"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="145dp"
-        android:layout_marginTop="380dp"
-        app:srcCompat="@drawable/circle2" />
+        <com.example.flightsimulatormobileapp.view.Joystick
+            android:id="@+id/joystick"
+            android:layout_width="250dp"
+            android:layout_marginTop="250dp"
+            android:layout_height="250dp" />
+
+    </FrameLayout>
+
+<!--    <ImageView-->
+<!--        android:id="@+id/outerCircle"-->
+<!--        android:layout_width="500dp"-->
+<!--        android:layout_height="500dp"-->
+<!--        android:layout_marginTop="180dp"-->
+<!--        app:srcCompat="@drawable/circle" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/innerCircle"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:layout_marginLeft="145dp"-->
+<!--        android:layout_marginTop="380dp"-->
+<!--        app:srcCompat="@drawable/circle2" />-->
 
     <SeekBar
         android:id="@+id/rudder"
