@@ -76,7 +76,7 @@
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="490dp"
+        android:layout_marginBottom="550dp"
         android:background="#6495ed"
         android:onClick="Connect"
         android:text="@string/connect"
@@ -103,8 +103,8 @@
         android:layout_height="80dp"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="200dp"
-        android:min="-1"
-        android:max="1"/>
+        android:min="0"
+        android:max="100"/>
 
     <SeekBar
         android:id="@+id/throttle"
@@ -114,7 +114,7 @@
         android:layout_marginLeft="-150dp"
         android:layout_marginTop="380dp"
         android:min="0"
-        android:max="1"/>
+        android:max="100"/>
 
 
 </RelativeLayout>

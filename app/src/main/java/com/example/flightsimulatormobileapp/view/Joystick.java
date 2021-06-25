@@ -38,8 +38,8 @@ public class Joystick extends View {
 //        SendingTask s = MainActivity.sendingTask;
 //        s.addToQueue(xCommand);
 //        s.addToQueue(yCommand);
-//        this.vm.setAileron(xCommand);
-//        this.vm.setElevator(yCommand);
+//        this.vm.setAileron(x);
+//        this.vm.setElevator(y);
     }
 
     // The function checks if a point (x,y) is inside the circle
@@ -77,7 +77,7 @@ public class Joystick extends View {
 
         if(hasFocus) {
             _root = (ViewGroup)findViewById(R.id.relativeRoot);
-            _knob = (ImageView) findViewById(R.id.knob);
+            _knob = (ImageView) findViewById(R.id.innerCircle);
             ImageView outer = (ImageView) findViewById(R.id.outerCircle);
             radius = (outer.getBottom() - outer.getTop()) / 2;
 
@@ -89,12 +89,12 @@ public class Joystick extends View {
             int h = (int) factor * 114;
 
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(w, h);
-//            layoutParams.topMargin = (int)_knob.getY() +20;
-//            layoutParams.leftMargin = (int)_knob.getX() +20;
-//
-//            // Save the original values for returning to center
-//            originalX = (int)_knob.getX() +20;
-//            originalY = (int)_knob.getY() +20;
+            layoutParams.topMargin = (int)_knob.getY() +20;
+            layoutParams.leftMargin = (int)_knob.getX() +20;
+
+            // Save the original values for returning to center
+            originalX = (int)_knob.getX() +20;
+            originalY = (int)_knob.getY() +20;
 
             _knob.setLayoutParams(layoutParams);
 //            _knob.setOnTouchListener(this);

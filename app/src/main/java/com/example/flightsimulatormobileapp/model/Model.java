@@ -1,5 +1,6 @@
 package com.example.flightsimulatormobileapp.model;
  // 192.168.56.1
+// 10.0.0.26
 import android.os.Build;
 import android.view.View;
 import android.widget.EditText;
@@ -25,28 +26,39 @@ public class Model {
     private  double aileron = 0.0;
     private  double rudder = 0.0;
     private  double throttle = 0.0;
-    private PrintWriter out;
-    //private BlockingQueue<Runnable> dispatchQueue = new LinkedBlockingDeque<Runnable>();
     private Socket socket;
+    private PrintWriter out;
     private int port;
     private String ip;
     private DataOutputStream dataOutputStream;
     private BlockingQueue<Runnable> dispatchQueue = new LinkedBlockingQueue<Runnable>();
 
-    // constructor
     public Model() {
         this.ip = "";
         this.port = 0;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        dispatchQueue.take().run();
+                    } catch (InterruptedException e) {
+                        // nothing in queue
+                    }
+                }
+            }
+        }).start();
+        System.out.println("constructor vm");
     }
+
+    // constructor
     public Model(String ip, int port) {
         this.ip = ip;
         this.port = port;
         try {
             InetAddress serverIP = InetAddress.getByName(this.ip);
             System.out.println("connecting");
-            this.socket = new Socket(serverIP, this.port);
-//            this.socket = new Socket();
-//            this.socket.connect(new InetSocketAddress(this.ip, this.port), 2000);
+            this.socket = new Socket(this.ip, this.port);
             System.out.println("connection success");
             this.out = new PrintWriter(socket.getOutputStream(), true);
             System.out.println("connection success");
@@ -72,20 +84,18 @@ public class Model {
         return dataOutputStream;
     }
 
-    public void connect(String ip, int port) throws InterruptedException {
+    public void connect(String ip, int port) throws IOException {
         this.ip = ip;
         this.port = port;
         try {
-            InetAddress serverIP = InetAddress.getByName(this.ip);
-            System.out.println("connecting");
-            this.socket = new Socket(serverIP, this.port);
-//            this.socket = new Socket();
-//            this.socket.connect(new InetSocketAddress(this.ip, this.port), 2000);
-            this.out = new PrintWriter(socket.getOutputStream(),true);
-            System.out.println("connection success");
-        } catch (Exception e) {
-            System.out.println("error occurred");
+            this.socket = new Socket(ip, port);
+            this.out = new PrintWriter(socket.getOutputStream(), true);
+            System.out.println("client connected");
+        } catch (IOException e) {
+            System.out.println("error");
         }
+
+
     }
 
     public void disconnect(){
