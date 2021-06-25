@@ -1,9 +1,5 @@
 package com.example.flightsimulatormobileapp.viewModel;
 
-import android.view.View;
-import android.widget.EditText;
-
-import com.example.flightsimulatormobileapp.R;
 import com.example.flightsimulatormobileapp.model.Model;
 
 import java.io.IOException;
@@ -42,8 +38,7 @@ public class ViewModel {
     public void setThrottle(int throttle) throws InterruptedException {
         if (this.model != null) {
             // convert throttle to double
-            double newThrottle = (double)(throttle / 100);
-            System.out.println(newThrottle);
+            double newThrottle = (double)throttle / 100;
             this.model.setThrottle(newThrottle);
         }
     }

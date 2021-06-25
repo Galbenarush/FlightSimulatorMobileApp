@@ -9,6 +9,7 @@ import android.os.StrictMode;
 import android.widget.SeekBar;
 
 import com.example.flightsimulatormobileapp.R;
+import com.example.flightsimulatormobileapp.attributes.VerticalSeekBar;
 import com.example.flightsimulatormobileapp.viewModel.ViewModel;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewModel vm;
     private String ip;
     private int port;
-    private SeekBar throttle;
+    private VerticalSeekBar throttle;
     private SeekBar rudder;
     private Joystick joystick;
 
