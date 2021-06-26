@@ -39,5 +39,10 @@ Press Play and enjoy :) <br />
 ## Introduction Video
 Link:
 
+## UML
+Attached also in the main folder
+![image](https://user-images.githubusercontent.com/72906989/123504889-a1873b00-d664-11eb-826c-18f6fad122eb.png)
+
 ## Screen Shots
+![image](https://user-images.githubusercontent.com/72906989/123504909-c54a8100-d664-11eb-891d-339d60916b5e.png)
 
