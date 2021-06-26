@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -71,16 +72,16 @@
         android:inputType="textCapSentences|textMultiLine" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/connect"
         android:layout_width="120dp"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="490dp"
+        android:layout_marginBottom="500dp"
         android:background="#6495ed"
         android:onClick="Connect"
         android:text="@string/connect"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 
     <FrameLayout
         android:id="@+id/joystick_frame"
@@ -90,26 +91,13 @@
 
         <com.example.flightsimulatormobileapp.view.Joystick
             android:id="@+id/joystick"
-            android:layout_width="250dp"
-            android:layout_marginTop="250dp"
-            android:layout_height="250dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
 
     </FrameLayout>
-
-<!--    <ImageView-->
-<!--        android:id="@+id/outerCircle"-->
-<!--        android:layout_width="500dp"-->
-<!--        android:layout_height="500dp"-->
-<!--        android:layout_marginTop="180dp"-->
-<!--        app:srcCompat="@drawable/circle" />-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/innerCircle"-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:layout_marginLeft="145dp"-->
-<!--        android:layout_marginTop="380dp"-->
-<!--        app:srcCompat="@drawable/circle2" />-->
 
     <SeekBar
         android:id="@+id/rudder"

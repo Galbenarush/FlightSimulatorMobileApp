@@ -1,38 +1,24 @@
+// Gal Ben Arush 208723791
+
 package com.example.flightsimulatormobileapp.model;
  // 192.168.56.1
 // 10.0.0.26
-import android.os.Build;
-import android.view.View;
-import android.widget.EditText;
 
-import com.example.flightsimulatormobileapp.R;
-
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
-import java.net.*;
-import java.io.PrintWriter;
-import java.io.*;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Model {
-    private  double elevator = 0.0;
-    private  double aileron = 0.0;
-    private  double rudder = 0.0;
-    private  double throttle = 0.0;
     private Socket socket;
     private PrintWriter out;
     private int port;
     private String ip;
-    private DataOutputStream dataOutputStream;
     private BlockingQueue<Runnable> dispatchQueue = new LinkedBlockingQueue<Runnable>();
 
+    /*** Model constructors ***/
     public Model() {
         this.ip = "";
         this.port = 0;
@@ -48,10 +34,8 @@ public class Model {
                 }
             }
         }).start();
-        System.out.println("constructor vm");
     }
 
-    // constructor
     public Model(String ip, int port) {
         this.ip = ip;
         this.port = port;
@@ -80,32 +64,56 @@ public class Model {
         }
     }
 
-    public DataOutputStream getDataOutputStream() {
-        return dataOutputStream;
-    }
-
+    /*** Connection and Disconnection ***/
     public void connect(String ip, int port) throws IOException {
+        // set IP and Port
         this.ip = ip;
         this.port = port;
         try {
+            // Open a socket
             this.socket = new Socket(ip, port);
             this.out = new PrintWriter(socket.getOutputStream(), true);
             System.out.println("client connected");
         } catch (IOException e) {
-            System.out.println("error");
+            System.out.println("connection error");
         }
 
 
     }
 
-    public void disconnect(){
+    public void disconnect() {
         try{
             this.socket.close();
-            this.dataOutputStream.close();
+            System.out.println("connection closed successfully");
         }catch (Exception e){
             System.out.println("had trouble closing");
         }
 
+    }
+
+    /*** Set flight controls surfaces ans send to server***/
+    public void setRudder(double rudder) throws InterruptedException {
+        dispatchQueue.put(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        out.print("set /controls/flight/rudder " + rudder + "\r\n");
+                        out.flush();
+                    }
+                }
+        );
+    }
+
+    public void setThrottle(double throttle) throws InterruptedException {
+        dispatchQueue.put(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        out.print("set /controls/engines/current-engine/throttle " + throttle + "\r\n");
+                        out.flush();
+                    }
+                }
+        );
     }
 
     public void setAileron(double aileron) throws InterruptedException {
@@ -126,30 +134,6 @@ public class Model {
                     @Override
                     public void run() {
                         out.print("set /controls/flight/elevator " + elevator + "\r\n");
-                        out.flush();
-                    }
-                }
-        );
-    }
-
-    public void setRudder(double rudder) throws InterruptedException {
-        dispatchQueue.put(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        out.print("set /controls/flight/rudder " + rudder + "\r\n");
-                        out.flush();
-                    }
-                }
-        );
-    }
-
-    public void setThrottle(double throttle) throws InterruptedException {
-        dispatchQueue.put(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        out.print("set /controls/engines/current-engine/throttle " + throttle + "\r\n");
                         out.flush();
                     }
                 }

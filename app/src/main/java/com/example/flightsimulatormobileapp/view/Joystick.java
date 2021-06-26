@@ -1,3 +1,5 @@
+// Gal Ben Arush
+
 package com.example.flightsimulatormobileapp.view;
 
 import android.content.Context;
@@ -7,24 +9,28 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
-
 import androidx.annotation.Nullable;
 
 import com.example.flightsimulatormobileapp.attributes.OnChange;
 
 public class Joystick extends View {
+    // height and width
+    private int h;
+    private int w;
     private Paint paint;
+    // outer circle settings
     private int outerCX;
     private int outerCY;
     private double outerCR;
-    private int joystickCircleX;
-    private int joystickCircleY;
-    private double joystickCircleRadius;
-    private int h;
-    private int w;
+    // inner circle settings
+    private int joystickX;
+    private int joystickY;
+    private double joystickR;
+    // onChange object
     public OnChange onChange;
 
+
+    /*** Joystick constructors ***/
     public Joystick(Context context) {
         super(context);
         this.paint = new Paint();
@@ -40,48 +46,48 @@ public class Joystick extends View {
         this.paint = new Paint();
     }
 
+
+    /*** Function that evaluates on size changes ***/
     @Override
     protected void onSizeChanged(int w, int h, int old_w, int old_h) {
         // super constructor
         super.onSizeChanged(w, h, old_w, old_h);
+        // set X,Y
         this.w = w;
         this.h = h;
 
         // evaluate inner x,y,r
-        this.joystickCircleRadius = 0.15f * Math.min(w, h);
-        this.joystickCircleX = this.w / 2;
-        this.joystickCircleY = this.h / 2;
+        this.joystickR = 0.14f * Math.min(w, h);
+        this.outerCR = 0.42 * Math.min(w, h);
+        this.joystickX = this.outerCX = this.w / 2;
+        this.joystickY = this.outerCY = this.h / 2;
 
-        // evaluate outer x,y,r
-        this.outerCR = 0.4 * Math.min(w, h);
-        this.outerCX = this.w / 2;
-        this.outerCY = this.h / 2;
     }
 
 
-
+    /*** Function that set motion events***/
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
+        int touchX, touchY, getAction;
+        touchX = (int) event.getX();
+        touchY = (int) event.getY();
+        getAction = event.getAction();
 
-        //Getting the X and Y coordinates of the touch input.
-        int touchX = (int) event.getX();
-        int touchY = (int) event.getY();
-        int eventaction = event.getAction();
-
-        switch (eventaction) {
-            //The user moved the joystick.
+        switch (getAction) {
+            // Touch motion event
             case MotionEvent.ACTION_MOVE:
                 moveOnTouch(touchX, touchY);
                 this.invalidate();
                 break;
 
-            //The user let go of the joystick
+            // Release motion event
             case MotionEvent.ACTION_UP:
-                this.joystickCircleY = this.outerCY;
-                this.joystickCircleX = this.outerCX;
+                // initialize joystick position
+                this.joystickY = this.outerCY;
+                this.joystickX = this.outerCX;
                 try {
-                    onChange.onChange(0,0);
+                    onChange.onChange(0,0); // back to center
                 } catch (Exception e) {
 
                 }
@@ -101,40 +107,39 @@ public class Joystick extends View {
 
         double dis = Math.sqrt(Math.pow(x - this.outerCX, 2) + Math.pow(y - this.outerCY, 2));
         if (dis <= this.outerCR) { // inside
-            this.joystickCircleX = x;
-            this.joystickCircleY = y;
+            this.joystickX = x;
+            this.joystickY = y;
         } else { // outside
             if (x == this.outerCX) {
                 if (y > this.outerCY) {
-                    this.joystickCircleY = this.outerCY + (int)this.outerCR;
-                    this.joystickCircleX = this.outerCX;
+                    this.joystickY = this.outerCY + (int)this.outerCR;
                 } else {
-                    this.joystickCircleY = this.outerCY - (int)this.outerCR;
-                    this.joystickCircleX = this.outerCX;
+                    this.joystickY = this.outerCY - (int)this.outerCR;
                 }
+                this.joystickX = this.outerCX;
             } else {
                 double angle = calcDeg(x, y);
                 if (angle <= 90) {
-                    this.joystickCircleY = (int)(this.outerCY + this.outerCR * sin(angle));
-                    this.joystickCircleX = findX(this.joystickCircleY, true);
+                    this.joystickY = (int)(this.outerCY + this.outerCR * sin(angle));
+                    this.joystickX = findX(this.joystickY, true);
                 } else if (angle <= 180) {
-                    this.joystickCircleY = (int)(this.outerCY + this.outerCR * sin(angle));
-                    this.joystickCircleX = findX(this.joystickCircleY, false);
+                    this.joystickY = (int)(this.outerCY + this.outerCR * sin(angle));
+                    this.joystickX = findX(this.joystickY, false);
                 } else if (angle <= 270) {
-                    this.joystickCircleY = (int)(this.outerCY - this.outerCR * sin(angle-180));
-                    this.joystickCircleX = findX(this.joystickCircleY, false);
+                    this.joystickY = (int)(this.outerCY - this.outerCR * sin(angle-180));
+                    this.joystickX = findX(this.joystickY, false);
                 } else {
-                    this.joystickCircleY = (int)(this.outerCY - this.outerCR * sin(360-angle));
-                    this.joystickCircleX = findX(this.joystickCircleY, true);
+                    this.joystickY = (int)(this.outerCY - this.outerCR * sin(360-angle));
+                    this.joystickX = findX(this.joystickY, true);
                 }
             }
         }
 
         //Activating the onChange method to notify that the values have changed.
         try {
-            double a = (this.joystickCircleX - this.outerCX) / (this.outerCR);
-            double e = (this.joystickCircleY - this.outerCY) / (this.outerCR);
-            e = -1 * e;
+            double a, e;
+            a = (this.joystickX - this.outerCX) / (this.outerCR);
+            e = ((this.joystickY - this.outerCY) / (this.outerCR)) * -1;
             onChange.onChange(a,e);
         } catch (Exception e) {
             System.out.println("error on change");
@@ -145,7 +150,7 @@ public class Joystick extends View {
     private int findX(int y, boolean isPos) {
         double x = Math.sqrt(Math.abs(Math.pow(this.outerCR, 2) - Math.pow(y - this.outerCY, 2)));
         if (isPos) {
-            x += this.outerCX;
+            x = x + this.outerCX;
         } else {
             x = this.outerCX - x;
         }
@@ -154,9 +159,8 @@ public class Joystick extends View {
 
     /*** CALCULATE degree for movement ***/
     private double calcDeg(int x, int y) {
-        double incline, d;
-        incline = (double)(this.outerCY - y) / (double)(this.outerCX - x);
-        d = Math.toDegrees(Math.atan(Math.abs(incline)));
+        double d;
+        d = Math.toDegrees(Math.atan(Math.abs((double)(this.outerCY - y) / (double)(this.outerCX - x))));
         if (x < this.outerCX && y > this.outerCY) {
             return 180 - d;
         }
@@ -172,18 +176,16 @@ public class Joystick extends View {
     /*** DRAW joystick***/
     @Override
     protected void onDraw(Canvas canvas) {
-
         super.onDraw(canvas);
-
-        // Draw inner circle
-        paint.setColor(Color.parseColor("#FFFFFF"));
-        canvas.drawCircle(this.joystickCircleX, this.joystickCircleY,
-                (float)this.joystickCircleRadius, paint);
-
         // Draw outer circle
         paint.setColor(Color.parseColor("#000000"));
         canvas.drawCircle(this.outerCX, this.outerCY,
                 (float)this.outerCR, paint);
+        // Draw inner circle
+        paint.setColor(Color.parseColor("#FFFFFF"));
+        canvas.drawCircle(this.joystickX, this.joystickY,
+                (float)this.joystickR, paint);
+
 
     }
 

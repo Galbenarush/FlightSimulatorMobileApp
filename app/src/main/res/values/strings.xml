@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">FlightSimulatorMobileApp</string>
     <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="failure">Unable to connect</string>
     <string name="portHint">Please Type Port</string>
     <string name="IPHint">Please Type IP</string>
     <string name="port">Port</string>
