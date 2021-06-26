@@ -33,11 +33,16 @@ Aileron, Elevator, Throttle, Rudder are flight control surfaces <br />
 Please download FlightGear application from: https://www.flightgear.org/ <br />
 Define FlightGear settings as follow: --telnet=socket,in,10,127.0.0.1,6400,tcp <br />
 Download "FlightSimulatorMobileApp" project to Android Studio (on Windows) <br />
-Press Play and enjoy :) <br />
+Press Play
+
+1. Fill IP and Port details
+2. Press connect
+3. Play with the joystick as you wish for
+4. Enjoy!
 
 
 ## Introduction Video
-Link:
+Link: https://www.youtube.com/watch?v=XPADD1-iNUw
 
 ## UML
 Attached also in the main folder
