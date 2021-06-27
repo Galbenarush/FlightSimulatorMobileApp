@@ -42,7 +42,7 @@ Press Play
 
 
 ## Introduction Video
-Link: https://www.youtube.com/watch?v=XPADD1-iNUw
+Link: https://youtu.be/zYt7_xnmEWo
 
 ## UML
 Attached also in the main folder
